@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!-- Force GitHub Pages rebuild - using custom workflow -->
+    <title>Digivation (Pty) Ltd - Company Profile</title>
+
+    <!-- Preload self-hosted fonts for print reliability -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/poppins-400.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/montserrat-600.woff2"
+      crossorigin
+    />
+
+    <!-- Default to A4; JS swaps to Letter if needed -->
+    <link
+      id="printProfile"
+      rel="stylesheet"
+      href="./print-a4.css"
+      media="print"
+    />
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        let paper = (params.get("paper") || "").toLowerCase();
+
+        if (!paper) {
+          paper = (function detectPaperSize() {
+            const LETTER_REGIONS = new Set([
+              "US",
+              "CA",
+              "MX",
+              "PH",
+              "CO",
+              "VE",
+              "CL",
+              "GT",
+              "CR",
+              "DO",
+              "PA",
+              "PR",
+              "SV",
+              "NI",
+              "HN",
+            ]);
+            const candidates = [
+              navigator.language,
+              ...(navigator.languages || []),
+              Intl.DateTimeFormat().resolvedOptions().locale || "",
+            ].filter(Boolean);
+            for (const loc of candidates) {
+              try {
+                const reg = new Intl.Locale(loc).region?.toUpperCase();
+                if (reg && LETTER_REGIONS.has(reg)) return "letter";
+              } catch {}
+            }
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+            if (/^America\//.test(tz)) return "letter";
+            return "a4";
+          })();
+        }
+
+        document.documentElement.setAttribute("data-paper", paper);
+        const link = document.getElementById("printProfile");
+        link.href =
+          paper === "letter" ? "./print-letter.css" : "./print-a4.css";
+      })();
+    </script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;600;700&display=swap");
+
+      /* Local font faces (print-safe) */
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-300.woff2") format("woff2");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-500.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-600.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Montserrat";
+        src: url("./assets/fonts/montserrat-600.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Montserrat";
+        src: url("./assets/fonts/montserrat-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      /* Digivation Brand Variables */
+      :root {
+        /* Typography */
+        --font-sans: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        --font-heading: "Montserrat", sans-serif;
+
+        /* Hero image - Use image-set for high-DPI print */
+        --hero-img: image-set(
+          url("./assets/images/nils-rasmusson-oMn624kk11I-unsplash.jpg?v=3") 1x,
+          url("./assets/images/hero@2x.jpg") 2x
+        );
+
+        /* Core brand colors from screenshots */
+        --brand-lime: #8caf27; /* H2 headings, primary accents */
+        --brand-lime-700: #76971e; /* hover/active */
+        --brand-teal: #2ec9cf; /* network node accent / subtle icons */
+        --brand-deep: #0f2230; /* deep navy text/backgrounds */
+        --surface-tint: #e8f2ef; /* light aqua "About" section background */
+
+        /* Neutrals from body copy */
+        --ink: #1f2c35;
+        --ink-muted: #4e5c63;
+        --ink-soft: #6e7a83;
+
+        /* Surface Colors */
+        --surface: #ffffff;
+        --surface-alt: #f4f4f4;
+        --surface-soft: #e0e0e0;
+
+        /* Buttons & states (ensure AA contrast) */
+        --btn-primary-bg: var(--brand-lime);
+        --btn-primary-text: #0b1407;
+        --btn-primary-hover: var(--brand-lime-700);
+        --btn-secondary-bg: var(--brand-teal);
+        --btn-secondary-text: #062427;
+        --btn-secondary-hover: color-mix(
+          in srgb,
+          var(--brand-teal) 82%,
+          #0a1a20
+        );
+
+        --focus-ring: color-mix(in srgb, var(--brand-teal) 55%, white);
+        --link: var(--brand-lime);
+        --link-hover: var(--brand-lime-700);
+
+        /* Spacing Scale */
+        --space-1: clamp(0.5rem, 0.6vw, 0.75rem);
+        --space-2: clamp(0.75rem, 1vw, 1rem);
+        --space-3: clamp(1rem, 1.6vw, 1.25rem);
+        --space-4: clamp(1.25rem, 2vw, 1.75rem);
+        --space-5: clamp(1.75rem, 3vw, 2.25rem);
+        --space-6: clamp(2rem, 4vw, 3rem);
+
+        /* Shape & elevation to match site */
+        --radius-md: 16px;
+        --radius-lg: 22px;
+        --shadow-sm: 0 6px 14px rgba(15, 34, 48, 0.1);
+        --shadow-md: 0 12px 26px rgba(15, 34, 48, 0.18);
+        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+        --border-soft: 1px solid var(--surface-soft);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        line-height: 1.6;
+        color: var(--ink);
+        background: var(--surface-alt);
+      }
+
+      /* Links */
+      a {
+        color: var(--link);
+        text-decoration: underline;
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--link-hover);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: var(--surface);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Cover Page */
+      .cover {
+        background: linear-gradient(
+            125deg,
+            rgba(15, 34, 48, 0.86),
+            rgba(46, 201, 207, 0.58)
+          ),
+          var(--hero-img) center 42% / cover no-repeat;
+        color: white;
+        padding: var(--space-6);
+        text-align: center;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cover::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            color-mix(in srgb, var(--brand-teal) 15%, transparent) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 50%,
+            color-mix(in srgb, var(--brand-lime) 10%, transparent) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+
+      .cover::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          color-mix(in srgb, var(--surface) 10%, transparent) 0%,
+          transparent 70%
+        );
+        animation: pulse 15s ease-in-out infinite;
+      }
+
+      /* Safety: nothing B-BBEE in the hero */
+      .hero .bbee-chip,
+      .hero [class*="bbee"] {
+        display: none !important;
+      }
+
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .hero-brandmark {
+        display: block;
+        margin-inline: auto;
+        margin-bottom: clamp(0.25rem, 1.2vw, 0.75rem);
+        max-width: min(42vw, 340px);
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+      }
+
+      /* Hide any other H1 elements in hero */
+      .hero h1:not(.visually-hidden) {
+        display: none !important;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .cover-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .tagline {
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        margin-bottom: var(--space-5);
+        font-weight: 300;
+        opacity: 0.9;
+      }
+
+      .bbee-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0 0 1rem;
+      }
+
+      .bbee-logo {
+        width: min(200px, 38vw);
+        height: auto;
+      }
+
+      .cover-footer {
+        margin-top: var(--space-6);
+        font-size: 1.125rem;
+        opacity: 0.8;
+      }
+
+      /* Content Sections */
+      .section {
+        padding: var(--space-6);
+        border-bottom: var(--border-soft);
+      }
+
+      .section:nth-child(even) {
+        background: var(--surface-alt);
+      }
+
+      .surface-tinted {
+        background: var(--surface-tint);
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--space-5);
+        padding-bottom: var(--space-3);
+        border-bottom: 3px solid var(--brand-lime);
+      }
+
+      .section-icon {
+        font-size: 2.5rem;
+        margin-right: var(--space-3);
+        color: var(--brand-teal);
+      }
+
+      .section-title {
+        font-family: var(--font-heading);
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        font-weight: 700;
+        color: var(--brand-lime);
+      }
+
+      .section-content {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--ink);
+      }
+
+      .section-content p {
+        margin-bottom: var(--space-3);
+      }
+
+      .highlight-box {
+        background: linear-gradient(
+          135deg,
+          color-mix(in srgb, var(--brand-lime) 5%, var(--surface)) 0%,
+          color-mix(in srgb, var(--brand-teal) 5%, var(--surface)) 100%
+        );
+        padding: var(--space-5);
+        border-radius: var(--radius-md);
+        margin: var(--space-5) 0;
+        border-left: 5px solid var(--brand-lime);
+      }
+
+      .highlight-box h3 {
+        font-family: var(--font-heading);
+        color: var(--brand-deep);
+        margin-bottom: var(--space-3);
+        font-size: 1.375rem;
+      }
+
+      /* Services Grid */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-4);
+        margin-top: var(--space-5);
+      }
+
+      .service-card {
+        background: var(--surface);
+        padding: var(--space-5);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-top: 4px solid var(--brand-lime);
+      }
+
+      .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .service-icon {
+        font-size: 3rem;
+        margin-bottom: var(--space-3);
+        color: var(--brand-teal);
+      }
+
+      .service-card h3 {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        margin-bottom: var(--space-3);
+        color: var(--brand-deep);
+      }
+
+      .service-card p {
+        font-size: 0.9375rem;
+        color: var(--ink-muted);
+        line-height: 1.6;
+      }
+
+      /* Stats Section */
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-4);
+        margin: var(--space-5) 0;
+      }
+
+      .stat-box {
+        text-align: center;
+        padding: var(--space-5);
+        background: linear-gradient(
+          135deg,
+          var(--brand-deep) 0%,
+          var(--brand-lime) 100%
+        );
+        color: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: var(--font-heading);
+        margin-bottom: var(--space-2);
+      }
+
+      .stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      /* Client Logos */
+      .clients-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--space-3);
+        margin-top: var(--space-5);
+      }
+
+      .client-item {
+        background: color-mix(in srgb, var(--surface-tint) 35%, white);
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        font-weight: 600;
+        color: var(--ink-muted);
+        transition: all 0.3s ease;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(15, 34, 48, 0.08);
+      }
+
+      .client-item:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-3px);
+        color: var(--brand-lime);
+      }
+
+      /* Contact Section */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space-4);
+        margin-top: var(--space-5);
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        padding: var(--space-4);
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .contact-icon {
+        font-size: 2rem;
+        color: var(--brand-teal);
+        margin-right: var(--space-3);
+      }
+
+      .contact-details h4 {
+        font-family: var(--font-heading);
+        color: var(--brand-deep);
+        margin-bottom: var(--space-1);
+        font-size: 1.125rem;
+      }
+
+      .contact-details p {
+        color: var(--ink-muted);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+      }
+
+      /* Contact card hygiene */
+      .contact-item {
+        min-height: auto;
+        padding: clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem);
+      }
+
+      .contact-details h4 {
+        margin: 0 0 0.5rem;
+        line-height: 1.25;
+      }
+
+      /* Prevent overflow on long strings */
+      .contact-item a,
+      .contact-item p,
+      .contact-item li,
+      .contact-item address {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        hyphens: auto;
+        margin: 0;
+      }
+
+      /* Tidy specific elements */
+      .contact-address {
+        font-style: normal;
+        line-height: 1.55;
+      }
+
+      .contact-email a {
+        text-decoration: none;
+      }
+
+      .contact-email a:hover {
+        text-decoration: underline;
+      }
+
+      /* Grid responsiveness tuned for phones */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: clamp(1rem, 2.5vw, 1.35rem);
+      }
+
+      /* Smaller devices: ensure single column and comfortable type */
+      @media (max-width: 680px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-item {
+          border-radius: 14px;
+        }
+
+        .contact-details h4 {
+          font-size: 1rem;
+        }
+      }
+
+      /* Slightly wider phones/phablets */
+      @media (min-width: 681px) and (max-width: 960px) {
+        .contact-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--brand-deep);
+        color: var(--surface);
+        padding: var(--space-5);
+        text-align: center;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+      }
+
+      .footer-bbbee {
+        background: var(--brand-lime);
+        color: var(--brand-deep);
+        padding: var(--space-3) var(--space-4);
+        border-radius: var(--radius-md);
+        font-weight: 600;
+      }
+
+      /* Print Styles - Minimal overrides, main styles in print.css */
+      @media print {
+        /* Remove any conflicting styles - print.css governs print */
+        .pdf-mode .contact-item::after {
+          content: none !important;
+          display: none !important;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .cover,
+        .section {
+          padding: var(--space-4);
+        }
+
+        .section-title {
+          font-size: 1.75rem;
+        }
+
+        .services-grid,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .clients-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: var(--space-2);
+        }
+      }
+
+      @media (max-width: 520px) {
+        .cover,
+        .section {
+          padding: var(--space-3);
+        }
+
+        .section {
+          padding: var(--space-4) var(--space-3);
+        }
+      }
+
+      /* Button System */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-radius: 999px;
+        padding: 0.85rem 1.4rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease,
+          background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid transparent;
+        box-shadow: 0 0 0 3px var(--focus-ring);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+        border: 1px solid color-mix(in srgb, var(--btn-primary-bg) 60%, black);
+        box-shadow: 0 10px 22px rgba(140, 175, 39, 0.24);
+      }
+
+      .btn-primary:hover {
+        background: var(--btn-primary-hover);
+      }
+
+      .btn-secondary {
+        background: var(--btn-secondary-bg);
+        color: var(--btn-secondary-text);
+        border: 1px solid color-mix(in srgb, var(--btn-secondary-bg) 45%, black);
+        box-shadow: 0 10px 22px rgba(46, 201, 207, 0.22);
+      }
+
+      .btn-secondary:hover {
+        background: var(--btn-secondary-hover);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--brand-deep);
+        border: 1.5px solid var(--brand-deep);
+      }
+
+      .btn-outline:hover {
+        background: color-mix(in srgb, var(--brand-deep) 7%, white);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Cover Page -->
+      <div class="cover">
+        <img
+          class="hero-bg-print"
+          src="./assets/images/hero@2x.jpg"
+          alt=""
+          aria-hidden="true"
+        />
+        <div class="overlay-print" aria-hidden="true"></div>
+        <div class="cover-content">
+          <h1 class="visually-hidden">Digivation</h1>
+          <img
+            src="./assets/images/Digivation_logo_neutral.png"
+            alt="Digivation"
+            class="hero-brandmark"
+            width="320"
+            height="auto"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="tagline">Strategic Turnkey Operations Partner</div>
+          <p style="font-size: 1.25rem; margin-bottom: var(--space-3)">
+            Telecommunications Field Services & Infrastructure Maintenance
+          </p>
+
+          <div class="cover-footer">
+            <p><strong>Digivation (Pty) Ltd</strong></p>
+            <p>Excellence in Telecommunications Infrastructure</p>
+            <p style="margin-top: var(--space-3); font-size: 1rem">
+              Company Profile 2025
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Us Section -->
+      <div class="section surface-tinted">
+        <div class="section-header">
+          <div class="section-icon">🏢</div>
+          <h2 class="section-title">About Digivation</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            <strong>Digivation (Pty) Ltd</strong> is a strategic turnkey
+            operations partner for major players within the Telecommunications
+            Field Service and Infrastructure Maintenance industry in South
+            Africa. With a proven track record of excellence and reliability, we
+            have established ourselves as a trusted name in the
+            telecommunications sector.
+          </p>
+
+          <div class="stats-container">
+            <div class="stat-box">
+              <div class="stat-number">100+</div>
+              <div class="stat-label">Skilled Professionals</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">Level 1</div>
+              <div class="stat-label">B-BBEE Status</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Client Satisfaction</div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <h3>Our Mission</h3>
+            <p>
+              To deliver exceptional telecommunications infrastructure services
+              through innovation, expertise, and unwavering commitment to
+              quality, while contributing to South Africa's digital
+              transformation and economic empowerment.
+            </p>
+          </div>
+
+          <p>
+            Employing in excess of 100 skilled staff members and with a
+            well-established footprint across South Africa, we are ideally
+            positioned for future growth and diversification. Our commitment to
+            excellence, combined with our Level 1 B-BBEE status, makes us the
+            preferred partner for organizations seeking reliable, compliant, and
+            high-quality telecommunications services.
+          </p>
+
+          <div class="highlight-box">
+            <h3>Our Vision</h3>
+            <p>
+              To be the leading provider of telecommunications infrastructure
+              services in South Africa, recognized for operational excellence,
+              innovation, and our contribution to economic transformation and
+              development.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Section -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">⚙️</div>
+          <h2 class="section-title">Our Services & Specializations</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            Digivation offers comprehensive telecommunications infrastructure
+            services designed to meet the evolving needs of South Africa's
+            telecommunications industry. Our turnkey approach ensures seamless
+            project delivery from planning to completion.
+          </p>
+
+          <div class="services-grid">
+            <div class="service-card">
+              <div class="service-icon">📡</div>
+              <h3>Telecommunications Field Services</h3>
+              <p>
+                Comprehensive field service solutions including site surveys,
+                installations, commissioning, and optimization of
+                telecommunications infrastructure across various network
+                technologies.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🔧</div>
+              <h3>Infrastructure Maintenance</h3>
+              <p>
+                Professional maintenance services ensuring optimal performance
+                and longevity of telecommunications infrastructure, minimizing
+                downtime and maximizing network reliability.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🏗️</div>
+              <h3>Full Site & Tower Maintenance</h3>
+              <p>
+                Complete preventative and corrective maintenance for
+                telecommunications sites and towers, including structural
+                assessments, equipment servicing, and compliance audits.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🛠️</div>
+              <h3>Preventative Maintenance</h3>
+              <p>
+                Scheduled maintenance programs designed to prevent equipment
+                failures, extend asset life, and ensure continuous network
+                availability through proactive interventions.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">⚡</div>
+              <h3>Corrective Maintenance</h3>
+              <p>
+                Rapid response emergency services for equipment failures and
+                network issues, ensuring minimal service disruption and quick
+                restoration of operations.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🔄</div>
+              <h3>Turnkey Operations</h3>
+              <p>
+                End-to-end project management and execution services, delivering
+                complete solutions from design and procurement to installation
+                and handover.
+              </p>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="margin-top: var(--space-5)">
+            <h3>Why Choose Digivation?</h3>
+            <p>
+              <strong>✓ Experienced Team:</strong> Over 100 skilled
+              professionals with deep industry expertise<br />
+              <strong>✓ Quality Assurance:</strong> Rigorous quality control and
+              compliance standards<br />
+              <strong>✓ Rapid Response:</strong> 24/7 support and emergency
+              services<br />
+              <strong>✓ B-BBEE Level 1:</strong> Contributing to transformation
+              and procurement goals<br />
+              <strong>✓ Proven Track Record:</strong> Successful project
+              delivery across South Africa
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects Section -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">📊</div>
+          <h2 class="section-title">Projects We've Delivered</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            Digivation has successfully delivered numerous high-impact projects
+            across South Africa's telecommunications landscape. Our portfolio
+            demonstrates our capability to handle complex, large-scale
+            infrastructure initiatives while maintaining the highest standards
+            of quality and safety.
+          </p>
+
+          <div class="services-grid">
+            <div class="service-card">
+              <h3>Network Infrastructure Rollouts</h3>
+              <p>
+                Nationwide deployment of telecommunications infrastructure for
+                major mobile network operators, including site construction,
+                equipment installation, and network integration.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <h3>Tower Maintenance Programs</h3>
+              <p>
+                Comprehensive maintenance contracts covering hundreds of
+                telecommunications towers across multiple provinces, ensuring
+                structural integrity and operational compliance.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <h3>Emergency Response Services</h3>
+              <p>
+                Critical incident response and restoration services during
+                network outages and infrastructure failures, minimizing service
+                disruption for millions of subscribers.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <h3>Infrastructure Upgrades</h3>
+              <p>
+                Technology refresh and upgrade projects, including migration to
+                advanced network technologies and capacity enhancement
+                initiatives.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <h3>Site Optimization Projects</h3>
+              <p>
+                Network optimization initiatives improving coverage, capacity,
+                and quality of service across urban and rural areas.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <h3>Compliance Audits</h3>
+              <p>
+                Comprehensive site audits and compliance assessments ensuring
+                adherence to regulatory requirements and industry standards.
+              </p>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="margin-top: var(--space-5)">
+            <h3>Project Success Metrics</h3>
+            <p>
+              Our projects are characterized by on-time delivery, within-budget
+              execution, zero safety incidents, and exceptional client
+              satisfaction. We pride ourselves on our ability to manage complex
+              logistics, coordinate multiple stakeholders, and deliver results
+              that exceed expectations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clients Section -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">🤝</div>
+          <h2 class="section-title">Our Key Clients</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            Digivation is proud to serve as a strategic partner to leading
+            organizations in South Africa's telecommunications sector. Our
+            client relationships are built on trust, reliability, and consistent
+            delivery of exceptional services.
+          </p>
+
+          <div class="highlight-box">
+            <h3>Industries We Serve</h3>
+            <p>
+              <strong>Telecommunications Operators</strong> - Mobile network
+              operators and fixed-line service providers<br />
+              <strong>Infrastructure Companies</strong> - Tower companies and
+              infrastructure service providers<br />
+              <strong>Technology Providers</strong> - Equipment manufacturers
+              and technology solution providers<br />
+              <strong>Government Entities</strong> - Public sector
+              telecommunications initiatives
+            </p>
+          </div>
+
+          <div class="clients-grid">
+            <div class="client-item">Major Mobile Network Operators</div>
+            <div class="client-item">Tower Infrastructure Companies</div>
+            <div class="client-item">Telecommunications Service Providers</div>
+            <div class="client-item">Equipment Suppliers</div>
+            <div class="client-item">Technology Integrators</div>
+            <div class="client-item">Government Departments</div>
+          </div>
+
+          <p style="margin-top: var(--space-5)">
+            Our client portfolio includes some of the most respected names in
+            South African telecommunications. These partnerships reflect our
+            commitment to excellence and our ability to deliver value in every
+            engagement.
+          </p>
+
+          <div class="highlight-box">
+            <h3>Client Testimonials</h3>
+            <p>
+              "Digivation's professional approach, technical expertise, and
+              commitment to safety make them an invaluable partner in our
+              infrastructure operations."
+            </p>
+            <p style="margin-top: var(--space-3); font-style: italic">
+              - Major Telecommunications Operator
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- B-BBEE Section -->
+      <div
+        class="section"
+        style="
+          background: linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--brand-lime) 5%, var(--surface)) 0%,
+            color-mix(in srgb, var(--brand-teal) 5%, var(--surface)) 100%
+          );
+        "
+      >
+        <div class="section-header">
+          <div class="section-icon">⭐</div>
+          <h2 class="section-title">B-BBEE Credentials</h2>
+        </div>
+        <div class="section-content">
+          <figure class="bbee-badge">
+            <img
+              src="./assets/images/Level_1_BEE.png"
+              alt="Level 1 B-BBEE Contributor"
+              class="bbee-logo"
+              width="200"
+              height="200"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+
+          <p>
+            Digivation (Pty) Ltd proudly holds
+            <strong>Level 1 B-BBEE status</strong>, representing the highest
+            level of Broad-Based Black Economic Empowerment certification in
+            South Africa. This achievement demonstrates our commitment to
+            transformation, economic empowerment, and inclusive growth.
+          </p>
+
+          <div class="highlight-box">
+            <h3>What Level 1 B-BBEE Means for Our Clients</h3>
+            <p>
+              <strong>135% Procurement Recognition:</strong> Partnering with
+              Digivation provides your organization with enhanced B-BBEE
+              procurement points, helping you achieve your own transformation
+              goals.<br /><br />
+              <strong>Compliance Assurance:</strong> Our Level 1 status ensures
+              compliance with government procurement requirements and industry
+              transformation imperatives.<br /><br />
+              <strong>Transformation Partner:</strong> Working with Digivation
+              demonstrates your commitment to economic transformation and
+              supporting B-BBEE compliant suppliers.<br /><br />
+              <strong>Competitive Advantage:</strong> Our credentials enhance
+              your tender competitiveness and stakeholder relationships.
+            </p>
+          </div>
+
+          <p>
+            Beyond certification, we are committed to meaningful transformation
+            through skills development, enterprise development, and community
+            engagement initiatives that contribute to South Africa's economic
+            empowerment objectives.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">📞</div>
+          <h2 class="section-title">Contact Us</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            Get in touch with Digivation to discuss your telecommunications
+            infrastructure needs. Our team is ready to provide expert guidance
+            and tailored solutions for your organization.
+          </p>
+
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div class="contact-details">
+                <h4>Head Office</h4>
+                <address class="contact-address" translate="no">
+                  2 Payne Rd<br />
+                  Cnr Main Office Park<br />
+                  Bryanston, 2191<br />
+                  Johannesburg
+                </address>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div class="contact-details">
+                <h4>Email</h4>
+                <p class="contact-email">
+                  <a href="mailto:info@digivation.global"
+                    >info@digivation.global</a
+                  >
+                </p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">🌐</div>
+              <div class="contact-details">
+                <h4>Website</h4>
+                <p>
+                  <a href="https://digivation.global">www.digivation.global</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">⏰</div>
+              <div class="contact-details">
+                <h4>Business Hours</h4>
+                <p>
+                  Monday - Friday: 8:00 AM - 5:00 PM<br />24/7 Emergency Support
+                  Available
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="highlight-box"
+            style="text-align: center; margin-top: var(--space-5)"
+          >
+            <h3>Ready to Partner with Us?</h3>
+            <p>
+              Contact Digivation today to discover how our Level 1 B-BBEE
+              certified services can support your telecommunications
+              infrastructure needs while contributing to your transformation
+              objectives.
+            </p>
+            <button
+              onclick="downloadPDF()"
+              class="btn btn-secondary"
+              style="
+                margin-top: 1rem;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            >
+              📄 Download PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF Contact Section (only visible in print) -->
+      <div class="pdf-contact-section" style="display: none">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon">📞</div>
+            <h2 class="section-title">Contact Information</h2>
+          </div>
+          <div class="section-content">
+            <div class="contact-grid">
+              <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-details">
+                  <h4>Head Office</h4>
+                  <address class="contact-address" translate="no">
+                    2 Payne Rd<br />
+                    Cnr Main Office Park<br />
+                    Bryanston, 2191<br />
+                    Johannesburg
+                  </address>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-details">
+                  <h4>Email</h4>
+                  <p class="contact-email">
+                    <a href="mailto:info@digivation.global"
+                      >info@digivation.global</a
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">🌐</div>
+                <div class="contact-details">
+                  <h4>Website</h4>
+                  <p>
+                    <a href="https://digivation.global"
+                      >www.digivation.global</a
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">⏰</div>
+                <div class="contact-details">
+                  <h4>Business Hours</h4>
+                  <p>
+                    Monday - Friday: 8:00 AM - 5:00 PM<br />24/7 Emergency
+                    Support Available
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="highlight-box"
+              style="text-align: center; margin-top: 2rem"
+            >
+              <h3>Ready to Partner with Us?</h3>
+              <p>
+                <strong>Email:</strong>
+                <a href="mailto:info@digivation.global"
+                  >info@digivation.global</a
+                >
+              </p>
+              <p>
+                <strong>Website:</strong>
+                <a href="https://digivation.global">www.digivation.global</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-content">
+          <div>
+            <p><strong>© 2025 Digivation (Pty) Ltd</strong></p>
+            <p>All Rights Reserved</p>
+          </div>
+          <div class="footer-bbbee">⭐ LEVEL 1 B-BBEE CERTIFIED ⭐</div>
+          <div>
+            <p>Strategic Turnkey Operations Partner</p>
+            <p>Excellence in Telecommunications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Print functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
+
+        // Add print button functionality (can be triggered with Ctrl+P)
+        document.addEventListener("keydown", function (e) {
+          if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+            window.print();
+          }
+        });
+      });
+
+      // PDF Download functionality - Force US Letter format
+      async function downloadPDF() {
+        // Force Letter format for PDF download
+        document.documentElement.setAttribute("data-paper", "letter");
+        const link = document.getElementById("printProfile");
+        link.href = "./print-letter.css";
+
+        document.body.classList.add("pdf-mode");
+        try {
+          if (document.fonts?.ready) await document.fonts.ready;
+          await new Promise((r) => setTimeout(r, 150));
+          window.print();
+        } finally {
+          const mql = window.matchMedia("print");
+          const cleanup = () => document.body.classList.remove("pdf-mode");
+          if (mql.addEventListener)
+            mql.addEventListener(
+              "change",
+              (e) => {
+                if (!e.matches) cleanup();
+              },
+              { once: true }
+            );
+          else setTimeout(cleanup, 800);
+        }
+      }
+    </script>
+  </body>
+</html>
