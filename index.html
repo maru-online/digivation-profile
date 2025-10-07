@@ -598,25 +598,120 @@
         gap: clamp(1rem, 2.5vw, 1.35rem);
       }
 
-      /* Smaller devices: ensure single column and comfortable type */
-      @media (max-width: 680px) {
+      /* Mobile Responsive Design */
+      @media (max-width: 768px) {
+        .container {
+          margin: 0;
+          box-shadow: none;
+        }
+
+        .cover {
+          padding: var(--space-4);
+          min-height: 80vh;
+        }
+
+        .hero-brandmark {
+          max-width: min(60vw, 280px);
+        }
+
+        .section {
+          padding: var(--space-4);
+        }
+
+        .section-header {
+          flex-direction: column;
+          text-align: center;
+          gap: var(--space-2);
+        }
+
+        .section-icon {
+          font-size: 2.5rem;
+        }
+
+        .section-title {
+          font-size: 1.75rem;
+        }
+
+        .services-grid {
+          grid-template-columns: 1fr;
+          gap: var(--space-3);
+        }
+
+        .clients-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: var(--space-2);
+        }
+
+        .stats-container {
+          grid-template-columns: 1fr;
+          gap: var(--space-3);
+        }
+
         .contact-grid {
           grid-template-columns: 1fr;
+          gap: var(--space-3);
         }
 
         .contact-item {
-          border-radius: 14px;
+          padding: var(--space-4);
+        }
+
+        .footer-content {
+          flex-direction: column;
+          text-align: center;
+          gap: var(--space-4);
+        }
+
+        .highlight-box {
+          padding: var(--space-4);
+          margin: var(--space-4) 0;
+        }
+      }
+
+      /* Small phones */
+      @media (max-width: 480px) {
+        .cover {
+          padding: var(--space-3);
+          min-height: 70vh;
+        }
+
+        .hero-brandmark {
+          max-width: min(70vw, 240px);
+        }
+
+        .section {
+          padding: var(--space-3);
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+        }
+
+        .service-card {
+          padding: var(--space-4);
+        }
+
+        .contact-item {
+          padding: var(--space-3);
         }
 
         .contact-details h4 {
           font-size: 1rem;
         }
+
+        .stat-number {
+          font-size: 2.5rem;
+        }
       }
 
-      /* Slightly wider phones/phablets */
-      @media (min-width: 681px) and (max-width: 960px) {
+      /* Tablet landscape */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .services-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
         .contact-grid {
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(2, 1fr);
         }
       }
 
@@ -1173,12 +1268,14 @@
               <div class="contact-details">
                 <h4>Contact Details</h4>
                 <p class="contact-email">
-                  <strong>Email:</strong> <a href="mailto:info@digivation.global"
+                  <strong>Email:</strong>
+                  <a href="mailto:info@digivation.global"
                     >info@digivation.global</a
                   >
                 </p>
                 <p>
-                  <strong>Website:</strong> <a href="https://digivation.global">www.digivation.global</a>
+                  <strong>Website:</strong>
+                  <a href="https://digivation.global">www.digivation.global</a>
                 </p>
               </div>
             </div>
@@ -1248,12 +1345,14 @@
                 <div class="contact-details">
                   <h4>Contact Details</h4>
                   <p class="contact-email">
-                    <strong>Email:</strong> <a href="mailto:info@digivation.global"
+                    <strong>Email:</strong>
+                    <a href="mailto:info@digivation.global"
                       >info@digivation.global</a
                     >
                   </p>
                   <p>
-                    <strong>Website:</strong> <a href="https://digivation.global"
+                    <strong>Website:</strong>
+                    <a href="https://digivation.global"
                       >www.digivation.global</a
                     >
                   </p>
