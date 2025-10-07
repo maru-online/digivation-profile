@@ -30,6 +30,10 @@
       href="./print-a4.css"
       media="print"
     />
+    
+    <!-- Screenshot-to-PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
       (function () {
@@ -1431,30 +1435,85 @@
         });
       });
 
-      // PDF Download functionality - Force US Letter format
+      // Screenshot-to-PDF functionality
       async function downloadPDF() {
-        // Force Letter format for PDF download
-        document.documentElement.setAttribute("data-paper", "letter");
-        const link = document.getElementById("printProfile");
-        link.href = "./print-letter.css";
-
-        document.body.classList.add("pdf-mode");
         try {
-          if (document.fonts?.ready) await document.fonts.ready;
-          await new Promise((r) => setTimeout(r, 150));
-          window.print();
+          // Show loading state
+          const button = document.querySelector('button[onclick="downloadPDF()"]');
+          const originalText = button.textContent;
+          button.textContent = '📸 Capturing...';
+          button.disabled = true;
+
+          // Wait for fonts to load
+          if (document.fonts?.ready) {
+            await document.fonts.ready;
+          }
+          
+          // Wait a moment for any animations to settle
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          // Capture the entire page as a high-quality screenshot
+          const canvas = await html2canvas(document.body, {
+            scale: 2, // High resolution for crisp output
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            width: window.innerWidth,
+            height: document.body.scrollHeight
+          });
+
+          // Create PDF with the screenshot
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          
+          // Calculate dimensions to fit the page
+          const imgWidth = 210; // A4 width in mm
+          const pageHeight = 297; // A4 height in mm
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          
+          // Add the image to PDF
+          const imgData = canvas.toDataURL('image/png', 1.0);
+          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+          
+          // If content is taller than one page, add additional pages
+          let yPosition = 0;
+          const pageHeightPx = (pageHeight * canvas.width) / imgWidth;
+          
+          while (yPosition < canvas.height) {
+            if (yPosition > 0) {
+              pdf.addPage();
+            }
+            
+            const sourceY = yPosition;
+            const sourceHeight = Math.min(pageHeightPx, canvas.height - yPosition);
+            const destHeight = (sourceHeight * imgWidth) / canvas.width;
+            
+            // Create a temporary canvas for this page
+            const pageCanvas = document.createElement('canvas');
+            const pageCtx = pageCanvas.getContext('2d');
+            pageCanvas.width = canvas.width;
+            pageCanvas.height = sourceHeight;
+            
+            pageCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
+            
+            const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+            pdf.addImage(pageImgData, 'PNG', 0, 0, imgWidth, destHeight);
+            
+            yPosition += sourceHeight;
+          }
+
+          // Download the PDF
+          pdf.save('Digivation-Company-Profile.pdf');
+          
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+          alert('Error generating PDF. Please try again.');
         } finally {
-          const mql = window.matchMedia("print");
-          const cleanup = () => document.body.classList.remove("pdf-mode");
-          if (mql.addEventListener)
-            mql.addEventListener(
-              "change",
-              (e) => {
-                if (!e.matches) cleanup();
-              },
-              { once: true }
-            );
-          else setTimeout(cleanup, 800);
+          // Restore button state
+          const button = document.querySelector('button[onclick="downloadPDF()"]');
+          button.textContent = originalText;
+          button.disabled = false;
         }
       }
     </script>
