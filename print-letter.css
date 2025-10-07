@@ -14,10 +14,24 @@ html, body { background:#fff !important; color:#1f2c35; height:auto !important; 
 .section:nth-child(even) { background:#f4f4f4 !important; }
 .section-title { color:#8caf27 !important; }
 
-.section, .section-header, .section-content,
-.highlight-box, .services-grid, .clients-grid, .contact-grid, .stats-container,
-.service-card, .client-item, .contact-item, .stat-box {
+/* Only prevent breaking on small, self-contained elements */
+.service-card, .client-item, .contact-item, .stat-box, .highlight-box {
   break-inside: avoid !important; page-break-inside: avoid !important; -webkit-column-break-inside: avoid !important;
+}
+
+/* Allow larger sections to break naturally */
+.section {
+  break-inside: auto !important; page-break-inside: auto !important;
+}
+
+/* Prevent breaking within grids only if they're small */
+.services-grid, .clients-grid, .contact-grid {
+  break-inside: auto !important; page-break-inside: auto !important;
+}
+
+/* Only avoid breaking on section headers if they're small */
+.section-header {
+  break-inside: avoid !important; page-break-inside: avoid !important;
 }
 
 .service-card, .contact-item, .client-item, .stat-box, .highlight-box {
@@ -27,5 +41,29 @@ html, body { background:#fff !important; color:#1f2c35; height:auto !important; 
 .btn, button { display:none !important; }
 .footer { background:#0f2230 !important; color:#fff !important; }
 img, svg { image-rendering:optimizeQuality; max-width:100%; height:auto; }
-p, li { orphans:3; widows:3; }
+/* Text flow optimization */
+p, li { orphans:2; widows:2; }
+
+/* Prevent empty pages */
+.section:empty { display:none !important; }
+.section-content:empty { display:none !important; }
+
+/* Better spacing for print */
+.section { margin-bottom:0 !important; padding-bottom:8mm !important; }
+.section-header { margin-bottom:4mm !important; }
+
+/* Ensure content flows naturally */
+.services-grid, .clients-grid, .contact-grid {
+  display:block !important;
+  column-count:2;
+  column-gap:4mm;
+  break-inside:auto !important;
+}
+
+/* Remove any forced heights that might cause empty space */
+.section, .section-content, .container {
+  min-height:auto !important;
+  height:auto !important;
+}
+
 .pdf-mode .contact-item::after { content:none !important; display:none !important; }
