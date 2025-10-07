@@ -1,69 +1,169 @@
-@page { size: 8.5in 11in; margin: 0.5in; }
-* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-html, body { background:#fff !important; color:#1f2c35; height:auto !important; }
-.container { max-width:none !important; width:100% !important; margin:0 !important; box-shadow:none !important; }
+@page {
+  size: 8.5in 11in;
+  margin: 0.5in;
+}
+* {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+html,
+body {
+  background: #fff !important;
+  color: #1f2c35;
+  height: auto !important;
+}
+.container {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
 
-.cover { position:relative; padding:0.9in 0.55in !important; break-after: page; }
-.cover::before, .cover::after { display:none !important; content:none !important; }
-.hero-bg-print{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0 }
-.overlay-print{ position:absolute; inset:0; z-index:1; background:linear-gradient(125deg, rgba(15,34,48,.86), rgba(46,201,207,.58)) }
-.cover .cover-content{ position:relative; z-index:2; color:#fff !important; }
-.hero-brandmark{ max-width:200px !important; filter:none !important; }
+.cover {
+  position: relative;
+  padding: 0.9in 0.55in !important;
+  break-after: page;
+}
+.cover::before,
+.cover::after {
+  display: none !important;
+  content: none !important;
+}
+.hero-bg-print {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.overlay-print {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    125deg,
+    rgba(15, 34, 48, 0.86),
+    rgba(46, 201, 207, 0.58)
+  );
+}
+.cover .cover-content {
+  position: relative;
+  z-index: 2;
+  color: #fff !important;
+}
+.hero-brandmark {
+  max-width: 200px !important;
+  filter: none !important;
+}
 
-.section.surface-tinted { background:#e8f2ef !important; }
-.section:nth-child(even) { background:#f4f4f4 !important; }
-.section-title { color:#8caf27 !important; }
+.section.surface-tinted {
+  background: #e8f2ef !important;
+}
+.section:nth-child(even) {
+  background: #f4f4f4 !important;
+}
+.section-title {
+  color: #8caf27 !important;
+}
 
 /* Only prevent breaking on small, self-contained elements */
-.service-card, .client-item, .contact-item, .stat-box, .highlight-box {
-  break-inside: avoid !important; page-break-inside: avoid !important; -webkit-column-break-inside: avoid !important;
+.service-card,
+.client-item,
+.contact-item,
+.stat-box,
+.highlight-box {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  -webkit-column-break-inside: avoid !important;
 }
 
 /* Allow larger sections to break naturally */
 .section {
-  break-inside: auto !important; page-break-inside: auto !important;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 /* Prevent breaking within grids only if they're small */
-.services-grid, .clients-grid, .contact-grid {
-  break-inside: auto !important; page-break-inside: auto !important;
+.services-grid,
+.clients-grid,
+.contact-grid {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 /* Only avoid breaking on section headers if they're small */
 .section-header {
-  break-inside: avoid !important; page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
-.service-card, .contact-item, .client-item, .stat-box, .highlight-box {
-  box-shadow:none !important; border:1px solid rgba(15,34,48,.10) !important;
+.service-card,
+.contact-item,
+.client-item,
+.stat-box,
+.highlight-box {
+  box-shadow: none !important;
+  border: 1px solid rgba(15, 34, 48, 0.1) !important;
 }
 
-.btn, button { display:none !important; }
-.footer { background:#0f2230 !important; color:#fff !important; }
-img, svg { image-rendering:optimizeQuality; max-width:100%; height:auto; }
+.btn,
+button {
+  display: none !important;
+}
+.footer {
+  background: #0f2230 !important;
+  color: #fff !important;
+}
+img,
+svg {
+  image-rendering: optimizeQuality;
+  max-width: 100%;
+  height: auto;
+}
 /* Text flow optimization */
-p, li { orphans:2; widows:2; }
+p,
+li {
+  orphans: 2;
+  widows: 2;
+}
 
 /* Prevent empty pages */
-.section:empty { display:none !important; }
-.section-content:empty { display:none !important; }
+.section:empty {
+  display: none !important;
+}
+.section-content:empty {
+  display: none !important;
+}
 
 /* Better spacing for print */
-.section { margin-bottom:0 !important; padding-bottom:8mm !important; }
-.section-header { margin-bottom:4mm !important; }
+.section {
+  margin-bottom: 0 !important;
+  padding-bottom: 8mm !important;
+}
+.section-header {
+  margin-bottom: 4mm !important;
+}
 
 /* Ensure content flows naturally */
-.services-grid, .clients-grid, .contact-grid {
-  display:block !important;
-  column-count:2;
-  column-gap:4mm;
-  break-inside:auto !important;
+.services-grid,
+.clients-grid,
+.contact-grid {
+  display: block !important;
+  column-count: 2;
+  column-gap: 4mm;
+  break-inside: auto !important;
 }
 
 /* Remove any forced heights that might cause empty space */
-.section, .section-content, .container {
-  min-height:auto !important;
-  height:auto !important;
+.section,
+.section-content,
+.container {
+  min-height: auto !important;
+  height: auto !important;
 }
 
-.pdf-mode .contact-item::after { content:none !important; display:none !important; }
+.pdf-mode .contact-item::after {
+  content: none !important;
+  display: none !important;
+}

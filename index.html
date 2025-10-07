@@ -30,7 +30,7 @@
       href="./print-a4.css"
       media="print"
     />
-    
+
     <!-- Screenshot-to-PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1311,18 +1311,50 @@
               infrastructure needs while contributing to your transformation
               objectives.
             </p>
-            <button
-              onclick="downloadPDF()"
-              class="btn btn-secondary"
-              style="
-                margin-top: 1rem;
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-              "
+            <!-- Email-to-PDF Form -->
+            <form 
+              name="pdf-request" 
+              method="POST" 
+              data-netlify="true" 
+              data-netlify-honeypot="bot-field"
+              style="margin-top: 1rem; max-width: 400px; margin-left: auto; margin-right: auto;"
             >
-              📄 Download PDF
-            </button>
+              <!-- Honeypot field for spam protection -->
+              <input type="hidden" name="bot-field" />
+              
+              <!-- Email input -->
+              <div style="margin-bottom: 1rem;">
+                <input 
+                  type="email" 
+                  name="email" 
+                  placeholder="Enter your email address" 
+                  required
+                  style="
+                    width: 100%;
+                    padding: 0.75rem;
+                    border: 2px solid var(--brand-teal);
+                    border-radius: var(--radius-md);
+                    font-size: 1rem;
+                    background: var(--surface);
+                    color: var(--ink);
+                  "
+                />
+              </div>
+              
+              <!-- Submit button -->
+              <button 
+                type="submit" 
+                class="btn btn-secondary"
+                style="width: 100%;"
+              >
+                📧 Get PDF via Email
+              </button>
+              
+              <!-- Success message (hidden by default) -->
+              <div id="form-success" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--brand-lime); color: var(--brand-deep); border-radius: var(--radius-md); text-align: center;">
+                ✅ Thank you! Your PDF will be delivered to your email shortly.
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -1435,83 +1467,83 @@
         });
       });
 
-      // Screenshot-to-PDF functionality
+      // Handle form submission success
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if this is a form success redirect
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+          document.getElementById('form-success').style.display = 'block';
+        }
+      });
+
+      // Screenshot-to-PDF functionality with better error handling (legacy)
       async function downloadPDF() {
+        const button = document.querySelector('button[onclick="downloadPDF()"]');
+        const originalText = button.textContent;
+        
         try {
+          // Check if libraries are loaded
+          if (typeof html2canvas === 'undefined') {
+            throw new Error('html2canvas library not loaded');
+          }
+          if (typeof window.jspdf === 'undefined') {
+            throw new Error('jsPDF library not loaded');
+          }
+
           // Show loading state
-          const button = document.querySelector('button[onclick="downloadPDF()"]');
-          const originalText = button.textContent;
-          button.textContent = '📸 Capturing...';
+          button.textContent = "📸 Capturing...";
           button.disabled = true;
 
           // Wait for fonts to load
           if (document.fonts?.ready) {
             await document.fonts.ready;
           }
-          
+
           // Wait a moment for any animations to settle
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          console.log('Starting screenshot capture...');
 
           // Capture the entire page as a high-quality screenshot
           const canvas = await html2canvas(document.body, {
-            scale: 2, // High resolution for crisp output
+            scale: 1.5, // Reduced scale to avoid memory issues
             useCORS: true,
             allowTaint: true,
-            backgroundColor: '#ffffff',
-            logging: false,
+            backgroundColor: "#ffffff",
+            logging: true, // Enable logging to see what's happening
             width: window.innerWidth,
-            height: document.body.scrollHeight
+            height: document.body.scrollHeight,
+            scrollX: 0,
+            scrollY: 0
           });
+
+          console.log('Screenshot captured, creating PDF...');
 
           // Create PDF with the screenshot
           const { jsPDF } = window.jspdf;
-          const pdf = new jsPDF('p', 'mm', 'a4');
-          
+          const pdf = new jsPDF("p", "mm", "a4");
+
           // Calculate dimensions to fit the page
           const imgWidth = 210; // A4 width in mm
           const pageHeight = 297; // A4 height in mm
           const imgHeight = (canvas.height * imgWidth) / canvas.width;
-          
+
           // Add the image to PDF
-          const imgData = canvas.toDataURL('image/png', 1.0);
-          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-          
-          // If content is taller than one page, add additional pages
-          let yPosition = 0;
-          const pageHeightPx = (pageHeight * canvas.width) / imgWidth;
-          
-          while (yPosition < canvas.height) {
-            if (yPosition > 0) {
-              pdf.addPage();
-            }
-            
-            const sourceY = yPosition;
-            const sourceHeight = Math.min(pageHeightPx, canvas.height - yPosition);
-            const destHeight = (sourceHeight * imgWidth) / canvas.width;
-            
-            // Create a temporary canvas for this page
-            const pageCanvas = document.createElement('canvas');
-            const pageCtx = pageCanvas.getContext('2d');
-            pageCanvas.width = canvas.width;
-            pageCanvas.height = sourceHeight;
-            
-            pageCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
-            
-            const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
-            pdf.addImage(pageImgData, 'PNG', 0, 0, imgWidth, destHeight);
-            
-            yPosition += sourceHeight;
-          }
+          const imgData = canvas.toDataURL("image/png", 0.8); // Reduced quality to avoid size issues
+          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+          console.log('PDF created, downloading...');
 
           // Download the PDF
-          pdf.save('Digivation-Company-Profile.pdf');
+          pdf.save("Digivation-Company-Profile.pdf");
           
+          console.log('PDF download completed successfully');
+
         } catch (error) {
-          console.error('Error generating PDF:', error);
-          alert('Error generating PDF. Please try again.');
+          console.error("Error generating PDF:", error);
+          alert(`Error generating PDF: ${error.message}. Please try again.`);
         } finally {
           // Restore button state
-          const button = document.querySelector('button[onclick="downloadPDF()"]');
           button.textContent = originalText;
           button.disabled = false;
         }
