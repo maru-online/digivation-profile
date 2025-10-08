@@ -1041,6 +1041,103 @@
         </div>
       </div>
 
+      <!-- IOT Solutions & Digital Transformation Section -->
+      <div class="section surface-tinted">
+        <div class="section-header">
+          <div class="section-icon">🌐</div>
+          <h2 class="section-title">IOT Solutions & Digital Transformation</h2>
+        </div>
+        <div class="section-content">
+          <p>
+            Digivation leverages cutting-edge Internet of Things (IoT)
+            technologies to drive digital transformation across various
+            industries. Our comprehensive IoT solutions enable organizations to
+            optimize operations, enhance efficiency, and unlock new
+            opportunities for growth and innovation.
+          </p>
+
+          <div class="services-grid">
+            <div class="service-card">
+              <div class="service-icon">🏙️</div>
+              <h3>Utilities & Smart Cities</h3>
+              <p>
+                Comprehensive smart city solutions including energy management
+                systems, waste management optimization, public safety
+                monitoring, and intelligent infrastructure management for
+                sustainable urban development.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🌾</div>
+              <h3>Agriculture</h3>
+              <p>
+                Advanced smart farming solutions featuring crop monitoring
+                systems, livestock tracking, precision agriculture technologies,
+                and automated irrigation management for enhanced agricultural
+                productivity.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">📦</div>
+              <h3>Supply Chain & Logistics Management</h3>
+              <p>
+                End-to-end supply chain visibility with real-time tracking,
+                inventory management systems, fleet optimization, and predictive
+                maintenance solutions for streamlined logistics operations.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🛒</div>
+              <h3>Smart Retail</h3>
+              <p>
+                Intelligent retail solutions including personalized shopping
+                experiences, inventory optimization, customer behavior
+                analytics, and automated checkout systems for enhanced retail
+                operations.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">🏢</div>
+              <h3>Building Management</h3>
+              <p>
+                Integrated smart building solutions featuring energy efficiency
+                systems, advanced security monitoring, space utilization
+                optimization, and automated facility management for modern
+                buildings.
+              </p>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon">📊</div>
+              <h3>Remote Expert Services</h3>
+              <p>
+                Advanced remote assistance solutions including augmented reality
+                (AR) and virtual reality (VR) support, predictive maintenance
+                systems, and real-time expert guidance for complex technical
+                operations.
+              </p>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="margin-top: var(--space-5)">
+            <h3>Our Value Proposition</h3>
+            <p>
+              Digivation's IoT solutions combine deep industry expertise with
+              cutting-edge technology to deliver measurable business outcomes.
+              We help organizations transform their operations through
+              intelligent automation, data-driven insights, and seamless
+              integration of IoT technologies that drive efficiency, reduce
+              costs, and create competitive advantages in today's digital
+              economy.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- Projects Section -->
       <div class="section">
         <div class="section-header">
@@ -1312,22 +1409,27 @@
               objectives.
             </p>
             <!-- Email-to-PDF Form -->
-            <form 
-              name="pdf-request" 
-              method="POST" 
-              data-netlify="true" 
+            <form
+              name="pdf-request"
+              method="POST"
+              data-netlify="true"
               data-netlify-honeypot="bot-field"
-              style="margin-top: 1rem; max-width: 400px; margin-left: auto; margin-right: auto;"
+              style="
+                margin-top: 1rem;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+              "
             >
               <!-- Honeypot field for spam protection -->
               <input type="hidden" name="bot-field" />
-              
+
               <!-- Email input -->
-              <div style="margin-bottom: 1rem;">
-                <input 
-                  type="email" 
-                  name="email" 
-                  placeholder="Enter your email address" 
+              <div style="margin-bottom: 1rem">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email address"
                   required
                   style="
                     width: 100%;
@@ -1340,18 +1442,29 @@
                   "
                 />
               </div>
-              
+
               <!-- Submit button -->
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 class="btn btn-secondary"
-                style="width: 100%;"
+                style="width: 100%"
               >
                 📧 Get PDF via Email
               </button>
-              
+
               <!-- Success message (hidden by default) -->
-              <div id="form-success" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--brand-lime); color: var(--brand-deep); border-radius: var(--radius-md); text-align: center;">
+              <div
+                id="form-success"
+                style="
+                  display: none;
+                  margin-top: 1rem;
+                  padding: 1rem;
+                  background: var(--brand-lime);
+                  color: var(--brand-deep);
+                  border-radius: var(--radius-md);
+                  text-align: center;
+                "
+              >
                 ✅ Thank you! Your PDF will be delivered to your email shortly.
               </div>
             </form>
@@ -1468,26 +1581,28 @@
       });
 
       // Handle form submission success
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         // Check if this is a form success redirect
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('success') === 'true') {
-          document.getElementById('form-success').style.display = 'block';
+        if (urlParams.get("success") === "true") {
+          document.getElementById("form-success").style.display = "block";
         }
       });
 
       // Screenshot-to-PDF functionality with better error handling (legacy)
       async function downloadPDF() {
-        const button = document.querySelector('button[onclick="downloadPDF()"]');
+        const button = document.querySelector(
+          'button[onclick="downloadPDF()"]'
+        );
         const originalText = button.textContent;
-        
+
         try {
           // Check if libraries are loaded
-          if (typeof html2canvas === 'undefined') {
-            throw new Error('html2canvas library not loaded');
+          if (typeof html2canvas === "undefined") {
+            throw new Error("html2canvas library not loaded");
           }
-          if (typeof window.jspdf === 'undefined') {
-            throw new Error('jsPDF library not loaded');
+          if (typeof window.jspdf === "undefined") {
+            throw new Error("jsPDF library not loaded");
           }
 
           // Show loading state
@@ -1502,7 +1617,7 @@
           // Wait a moment for any animations to settle
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          console.log('Starting screenshot capture...');
+          console.log("Starting screenshot capture...");
 
           // Capture the entire page as a high-quality screenshot
           const canvas = await html2canvas(document.body, {
@@ -1514,10 +1629,10 @@
             width: window.innerWidth,
             height: document.body.scrollHeight,
             scrollX: 0,
-            scrollY: 0
+            scrollY: 0,
           });
 
-          console.log('Screenshot captured, creating PDF...');
+          console.log("Screenshot captured, creating PDF...");
 
           // Create PDF with the screenshot
           const { jsPDF } = window.jspdf;
@@ -1532,13 +1647,12 @@
           const imgData = canvas.toDataURL("image/png", 0.8); // Reduced quality to avoid size issues
           pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-          console.log('PDF created, downloading...');
+          console.log("PDF created, downloading...");
 
           // Download the PDF
           pdf.save("Digivation-Company-Profile.pdf");
-          
-          console.log('PDF download completed successfully');
 
+          console.log("PDF download completed successfully");
         } catch (error) {
           console.error("Error generating PDF:", error);
           alert(`Error generating PDF: ${error.message}. Please try again.`);
