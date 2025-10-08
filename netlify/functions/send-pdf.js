@@ -75,7 +75,7 @@ exports.handler = async (event, context) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Digivation (Pty) Ltd" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Digivation Company Profile - PDF",
       html: `
